@@ -1,3 +1,5 @@
+//WORK IN PROGRESS!!!
+
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
@@ -36,7 +38,7 @@ public class load_and_save
 		}
 		catch (Exception e) 
 		{
-			System.out.println("EOF (END OF FILE) reached.");
+			System.out.println("EOF (END OF FILE) reached. Or other error :P i think...");
 			return index;
 		}
 	}
@@ -50,10 +52,10 @@ public class load_and_save
 		}
 		catch (FileNotFoundException e) 
 		{
-			System.out.println ("Błąd utworzenia " +fileName);
+			System.out.println ("Error while creating " +fileName);
 			System.exit (0); 
 		}
-		outputStream.println("blablabla"); 
+		outputStream.println("Blah, blah, blah. Blah."); 
 		for (int ix=0;ix<index;ix++)
 		{                       
 			outputStream.printf("%s\t%s\t%s\n",table[ix][1],table[ix][4],table[ix][5] );
@@ -67,13 +69,13 @@ public class load_and_save
 		JFileChooser chooser = new JFileChooser();
 		int returnVal = chooser.showOpenDialog(null);
 		if(returnVal == JFileChooser.APPROVE_OPTION) {
-		System.out.println(chooser.getSelectedFile().getName() + " wybrany");
+		System.out.println(chooser.getSelectedFile().getName() + " chosen.");
 		
 		int i = 0;
 		String[][] tablica = new String[2300][6]; //[x][0]date, [x][1]time, [x][2]lati, [x][3]longi, [x][4]alti, [x][5]dist;
 		
 		
-		i = load_and_save.load(chooser, i, tablica); // public static int load jest "int" a nie "void" ponieważ po zakończeniu działania, funkcja musi zwrócić "int index" dla metody 'save'
+		i = load_and_save.load(chooser, i, tablica); // method 'load' must be int so it can return index value
 		load_and_save.save("velocity.csv", i, tablica);
 	
 		}
