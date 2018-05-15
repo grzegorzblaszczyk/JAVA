@@ -11,37 +11,37 @@ public class load_and_save
 	//BRAKUJE OBSŁUGI WYJĄTKÓW
 	public static int load(JFileChooser chooser, int index, String[][] table) 
 	{
+		Scanner odczyt=null;
 		try 
 		{ 
-			Scanner odczyt= new Scanner ( chooser.getSelectedFile() ); 
+			odczyt= new Scanner ( chooser.getSelectedFile() ); 
 			odczyt.nextLine();
 			
-			while(odczyt.next() != null )
+			while(odczyt.hasNextLine())
 			{
-				odczyt.next(); // if u are on Linux (on Windows, Scanner doesnt read "T" column)
+				odczyt.next(); // if u are on Linux. (on Windows, Scanner doesnt read "T" column)
 				table[index][0] = odczyt.next(); // date
-				System.out.print(table[index][0] + " ");	
+				//System.out.print(table[index][0] + " ");	
 				table[index][1] = odczyt.next(); // time
-				System.out.print(table[index][1] + " ");	
+				//System.out.print(table[index][1] + " ");	
 				table[index][2] = odczyt.next(); // latitude
-				System.out.print(table[index][2] + " ");	
+				//System.out.print(table[index][2] + " ");	
 				table[index][3] = odczyt.next(); // longitude
-				System.out.print(table[index][3] + " ");	
+				//System.out.print(table[index][3] + " ");	
 				table[index][4] = odczyt.next(); // altitude
-				System.out.print(table[index][4] + " ");	
+				//System.out.print(table[index][4] + " ");	
 				table[index][5] = odczyt.next(); // distance
-				System.out.print(table[index][5] + " ");	
-				System.out.println("Is good. " + ++index);
+				//System.out.print(table[index][5] + " ");	
+				/*System.out.println("Is good. " + ++index);*/ index++;
 			}
-			System.out.println("Data loaded from " + chooser.getSelectedFile());
-			odczyt.close();
-			return index;
 		}
 		catch (Exception e) 
 		{
-			System.out.println("EOF (END OF FILE) reached. Or other error :P i think...");
-			return index;
+			System.out.println("Exception thrown.");
 		}
+		System.out.println("Data loaded from " + chooser.getSelectedFile());
+		odczyt.close();
+		return index;
 	}
 
 	public static void save(String fileName, int index, String[][] table) 
