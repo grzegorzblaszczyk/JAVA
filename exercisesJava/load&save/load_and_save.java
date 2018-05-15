@@ -18,6 +18,7 @@ public class load_and_save
 			
 			while(odczyt.next() != null )
 			{
+				odczyt.next(); // if u are on Linux (on Windows, Scanner doesnt read "T" column)
 				table[index][0] = odczyt.next(); // date
 				System.out.print(table[index][0] + " ");	
 				table[index][1] = odczyt.next(); // time
