@@ -25,10 +25,10 @@ public class draw_a_plot extends JApplet
 		setLayout(null);
 		
 		// Y axis
-		tlo.setColor(Color.BLACK);
-		tlo.drawLine(15, 600, 15, 0 ); 
-		tlo.drawLine(15, 0, 5, 20 );  
-		tlo.drawLine(15, 0, 25, 20 ); 
+		g.setColor(Color.BLACK);
+		g.drawLine(15, 600, 15, 0 ); 
+		g.drawLine(15, 0, 5, 20 );  
+		g.drawLine(15, 0, 25, 20 ); 
 
   		int x=0; //function variable 'x' 
   		int x0=15; //variable for drawing 'x'
@@ -46,13 +46,13 @@ public class draw_a_plot extends JApplet
   		offset = (double) height / 2;
   		
 		//X axis
-  		tlo.drawLine (x0, (int) offset, width+30, (int) offset); 
-  		tlo.drawLine (width+30, (int) offset, width+15, (int) offset+10); //X axis arrow
- 		tlo.drawLine (width+30, (int) offset, width+15, (int) offset-10); //X axis arrow 
-  		tlo.drawString("0", 9, (int)offset);
-  		tlo.drawString("2\u03c0", 300, (int)offset); // \u03c0 to kod na symbol "PI"
-  		tlo.drawString("4\u03c0", 600, (int)offset);
- 		tlo.drawString("6\u03c0", 900, (int)offset);
+  		g.drawLine (x0, (int) offset, width+30, (int) offset); 
+  		g.drawLine (width+30, (int) offset, width+15, (int) offset+10); //X axis arrow
+ 		g.drawLine (width+30, (int) offset, width+15, (int) offset-10); //X axis arrow 
+  		g.drawString("0", 9, (int)offset);
+  		g.drawString("2\u03c0", 300, (int)offset); // \u03c0 to kod na symbol "PI"
+  		g.drawString("4\u03c0", 600, (int)offset);
+ 		g.drawString("6\u03c0", 900, (int)offset);
 		
 		//fun_1 start point x,f(x)
 	  	t = (double) x / ((double) width);
@@ -60,13 +60,13 @@ public class draw_a_plot extends JApplet
   		y0 = offset - A*0.25*Math.cos(f);
 
   		//draw fun_1
-  		tlo.setColor(Color.GREEN); //g(x)
+  		g.setColor(Color.GREEN); //g(x)
   		for (x0=15; x0<width; x0++) 
 		{
 	  		t = (double) x / ((double) width);
 	  		f = range * t; 
         		y = offset - A*0.25*Math.cos(f);
-         		tlo.drawLine (x0, (int) y0, (x0+1), (int) y);
+         		g.drawLine (x0, (int) y0, (x0+1), (int) y);
          		y0 = y;
          		x++;        
 		}
@@ -78,13 +78,13 @@ public class draw_a_plot extends JApplet
   		y0 = offset - A * Math.cos(f)*Math.exp(f*(-0.2));
   
 		//draw fun_2		
-		tlo.setColor(Color.BLUE);
+		g.setColor(Color.BLUE);
 		for (x0=15; x0<width; x0++) 
 		{
       			t = (double) x / ((double) width);
          		f = range * t;
          		y = offset - A * Math.cos(f)*Math.exp(f*(-0.2));
-        		tlo.drawLine (x0, (int) y0, (x0+1), (int) y);
+        		g.drawLine (x0, (int) y0, (x0+1), (int) y);
         		y0 = y;
         		x++;
 		}
