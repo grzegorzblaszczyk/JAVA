@@ -1,6 +1,4 @@
 //WORK IN PROGRESS!!!
-package magic;
-
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
