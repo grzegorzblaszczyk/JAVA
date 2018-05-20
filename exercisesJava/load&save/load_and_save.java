@@ -8,8 +8,6 @@ import javax.swing.JFileChooser;
 
 public class load_and_save
 {   
-	//BRAKUJE OBSŁUGI WYJĄTKÓW
-	//POPRAW LOAD
 	public static int load(JFileChooser chooser, int index, String[][] table) 
 	{
 		Scanner odczyt=null;
