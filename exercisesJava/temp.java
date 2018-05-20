@@ -1,22 +1,19 @@
-//WORK IN PROGRESS!!!
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
-import java.text.NumberFormat;
 import java.util.Scanner;
 import javax.swing.JFileChooser;
 import java.util.Locale;
+import java.io.File;
 
 import java.awt.*;
 import javax.swing.*;
 import java.applet.*;
-//import javax.swing.JApplet;
-//import java.awt.Color;
+import javax.swing.JApplet;
+import java.awt.Color;
 
 public class magic extends JApplet
 {   
-	//BRAKUJE OBSŁUGI WYJĄTKÓW
-	//POPRAW LOAD
 	public static int load(JFileChooser chooser, int index, String[][] table) 
 	{
 		Scanner odczyt=null;
@@ -48,6 +45,33 @@ public class magic extends JApplet
 			System.out.println("Exception thrown.");
 		}
 		System.out.println("Data loaded from " + chooser.getSelectedFile());
+		odczyt.close();
+		return index;
+	}
+	public static int load2(String filename, int index, Double[][] table) 
+	{
+		Scanner odczyt=null;
+		try 
+		{ 
+			odczyt= new Scanner(new File(filename)); 
+			odczyt.nextLine();
+		
+		odczyt.nextLine();
+		while(odczyt.hasNextLine())
+		{
+			table[index][0] = Double.parseDouble(odczyt.next()); //time	
+			table[index][1] = Double.parseDouble(odczyt.next()); //velocity	
+			table[index][2] = Double.parseDouble(odczyt.next()); //height
+			System.out.println(table[index][2] + " " + index);
+			index++;
+			}
+		}
+		catch (Exception e) 
+		{
+			System.out.println("Exception thrown.");
+		}	
+		
+		System.out.println("Data loaded from " + filename);
 		odczyt.close();
 		return index;
 	}
@@ -85,77 +109,80 @@ public class magic extends JApplet
 		{                       
 			time = magic.convertTime(ix+1,table)-magic.convertTime(ix,table);
 			distance = (Double.parseDouble(table[ix+1][5]) - Double.parseDouble(table[ix][5]))*1000;
-			velocity = time*distance;
+			velocity = distance/time;
 			hight = Double.parseDouble(table[ix+1][4]);
 			outputStream.printf("%.3f\t\t%.3f\t\t%.3f\n",time, velocity, hight);
 		}
 		System.out.println("Data saved to " +fileName);
 		outputStream.close();			
 	}
-	
+	public static double highestHeight(Double[][] tab, int index)
+	{
+		double max = tab[0][2];
+		for(int i=0;i<index;i++)
+		{
+			if(max>=tab[i][2])
+				continue;
+			else
+			{
+				max = tab[i][2];
+			}
+		}
+		return max;
+	}
+
 	public void paint(java.awt.Graphics g) 
 	{
+		
+		super.paint(g);
+		Double[][] tab = new Double[2300][3];
+		int index = 0;
+		index = magic.load2("velocity.csv", index, tab);
+		double max = magic.highestHeight(tab,index);
+		
 		int width, height;
-		width = 400;
-		height = 800;
+		width = index; 
+		height=0;
+		while(max>height)
+			height+=100;
+		
+		
 		// Y axis
 		g.setColor(Color.BLACK);
-		g.drawLine(15, 800, 15, 0 ); 
+		g.drawLine(15, 400, 15, 0 ); 
 		g.drawLine(15, 0, 5, 20 );  
 		g.drawLine(15, 0, 25, 20 ); 
 
 		//X axis
-		for(int i=0;i<9;i++)
-  		g.drawLine (15, 0+i*100, 915, 0+i*100); 
-		g.drawLine (width+30, 800, width+15, 800+10); 
-		g.drawLine (width+30, 800, width+15, 800-10);
-		
-		JFileChooser chooser = new JFileChooser();
-		int returnVal = chooser.showOpenDialog(null);
-		if(returnVal == JFileChooser.APPROVE_OPTION) 
-			System.out.println(chooser.getSelectedFile().getName() + " chosen.");
-		else 
-			System.exit(0);
-		
-		Double[][] tab = new Double[2300][2];
-		int index = 0;
-		index = magic.load2(chooser, index, tab);
-		/*
-		int x=0; //function variable 'x' 
-  		int x0=15; //variable for drawing 'x'
-  		double y; //function values f(x)
-  		double y0; //variable for drawing 'y'
-  
-  		double range = index; //N*2*PI = 2*PI will fit X axis N times.
-  		double t, f, A, offset;
-  		// t - X Axis subsidiary variable for fitting the plot
-  		// A - Y Axis subsidiary variable for fitting the plot
-  		// f - 'function argument' variable for fitting the plot (f is like f.e. an 'x' in cos(x))
- 		//offset - offset for drawing y (to fit X axis)
-	 
-  		A = (double) height;  
-  		offset = (double) height;
-  		//fun_1 start point x,f(x)
-	  	t = (double) x / ((double) width);
- 		f = range * t;
-  		y0 = offset - tab[index][1];
-  		//draw fun_1
-  		g.setColor(Color.GREEN); //g(x)
-  		for (x0=15; x0<width; x0++) 
+		for(int i=0;i<5;i++) 
 		{
-	  		t = (double) x / ((double) width);
-	  		f = range * t; 
-        	y = offset - A*tab[index][1];
-         	g.drawLine (x0, (int) y0, (x0+1), (int) y);
-         	y0 = y;
-         	x++;
-               
-		}*/  
+			g.drawLine (15, 0+i*100, width+15, 0+i*100); 
+			g.drawString((height-i*100)+"m", 15, 10+i*100); 
+		}
+		g.drawLine (width+30, 400, width+15, 400+10); 
+		g.drawLine (width+30, 400, width+15, 400-10);
+		
+		
+		
+		//height+=200; //wysokość od 0(+200) do 400(+200); wykres dla Garganta-del-Cares
+		
+		double y,y0;
+		index = 0;
+		y0 = height - tab[index][2];
+		g.setColor(Color.RED);
+		for(int i=15;i<(width-(15+1));i++)
+		{
+			y = height - tab[index][2];
+			g.drawLine(i,(int)y0,i+1,(int)y);
+			y0=y;
+			index++;
+		}														
 	}
 	
 	public static void main(String[] args) throws FileNotFoundException 
 	{	
-		Locale.setDefault(new Locale("en", "US"));
+		
+		Locale.setDefault(new Locale("en", "US")); //so u can save double as #.# format
 		JFileChooser chooser = new JFileChooser();
 		int returnVal = chooser.showOpenDialog(null);
 		if(returnVal == JFileChooser.APPROVE_OPTION) 
@@ -172,38 +199,9 @@ public class magic extends JApplet
 		JFrame jp1 = new JFrame();
 		magic a = new magic();
 		jp1.getContentPane().add(a);
-        jp1.setSize(new Dimension(400,800));
+        jp1.setSize(new Dimension(index+50,450));
         jp1.setVisible(true);
 		}
-	
-	public static int load2(JFileChooser chooser, int index, Double[][] table) 
-	{
-		Scanner odczyt=null;
-		try 
-		{ 
-			odczyt= new Scanner ( chooser.getSelectedFile() ); 
-			odczyt.nextLine();
-		
-		odczyt.nextLine();
-		while(odczyt.hasNextLine())
-		{
-			table[index][0] = Double.parseDouble(odczyt.next()); //time	
-			System.out.println(table[index][0] + " " + index);
-			table[index][1] = Double.parseDouble(odczyt.next()); //velocity	
-			odczyt.next();	
-			index++;
-			}
-		}
-		catch (Exception e) 
-		{
-			System.out.println("Exception thrown.");
-		}	
-		
-		System.out.println("Data loaded from " + chooser.getSelectedFile());
-		odczyt.close();
-		return index;
-	}
-	
-	
+
 
 }
