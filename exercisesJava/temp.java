@@ -14,7 +14,7 @@ import java.awt.Color;
 
 public class magic extends JApplet
 {   
-	public static int load(JFileChooser chooser, int index, String[][] table) 
+	public static int loadData(JFileChooser chooser, int index, String[][] table) 
 	{
 		Scanner odczyt=null;
 		try 
@@ -48,7 +48,7 @@ public class magic extends JApplet
 		odczyt.close();
 		return index;
 	}
-	public static int load2(String filename, int index, Double[][] table) 
+	public static int loadVelocityCsv(String filename, int index, Double[][] table) 
 	{
 		Scanner odczyt=null;
 		try 
@@ -59,8 +59,8 @@ public class magic extends JApplet
 		odczyt.nextLine();
 		while(odczyt.hasNextLine())
 		{
-			table[index][0] = Double.parseDouble(odczyt.next()); //time	
-			table[index][1] = Double.parseDouble(odczyt.next()); //velocity	
+			table[index][0] = Double.parseDouble(odczyt.next()); //time
+			table[index][1] = Double.parseDouble(odczyt.next()); //velocity
 			table[index][2] = Double.parseDouble(odczyt.next()); //height
 			System.out.println(table[index][2] + " " + index);
 			index++;
@@ -75,7 +75,7 @@ public class magic extends JApplet
 		odczyt.close();
 		return index;
 	}
-	public static double convertTime(int index, String[][] table) 
+	public static double timeToSec(int index, String[][] table) 
 	{
 		double ms, s, m, h;
 		String[] parts = table[index][1].split("[.]");
@@ -86,7 +86,7 @@ public class magic extends JApplet
 		ms = Double.parseDouble(parts[1])/1000;
 		return h+m+s+ms;
 	}
-	public static void save(String fileName, int index, String[][] table) 
+	public static void saveVelocityCsv(String fileName, int index, String[][] table) 
 	{   
 		double time = 0.0;
 		double distance = 0.0;
@@ -107,7 +107,7 @@ public class magic extends JApplet
 		outputStream.printf("0.000\t\t0.000\t\t%.3f\n", Double.parseDouble(table[0][4])); 
 		for (int ix=0;ix<(index-1);ix++)
 		{                       
-			time = magic.convertTime(ix+1,table)-magic.convertTime(ix,table);
+			time = magic.timeToSec(ix+1,table)-magic.timeToSec(ix,table);
 			distance = (Double.parseDouble(table[ix+1][5]) - Double.parseDouble(table[ix][5]))*1000;
 			velocity = distance/time;
 			hight = Double.parseDouble(table[ix+1][4]);
@@ -116,7 +116,7 @@ public class magic extends JApplet
 		System.out.println("Data saved to " +fileName);
 		outputStream.close();			
 	}
-	public static double highestHeight(Double[][] tab, int index)
+	public static double maxHeight(Double[][] tab, int index)
 	{
 		double max = tab[0][2];
 		for(int i=0;i<index;i++)
@@ -137,17 +137,17 @@ public class magic extends JApplet
 		super.paint(g);
 		Double[][] tab = new Double[2300][3];
 		int index = 0;
-		index = magic.load2("velocity.csv", index, tab);
-		double max = magic.highestHeight(tab,index);
+		index = magic.loadVelocityCsv("velocity.csv", index, tab);
+		double max = magic.maxHeight(tab,index);
 		
 		int width, height;
 		width = index; 
 		height=0;
-		while(max>height)
+		while(max>height) //height scaling
 			height+=100;
 		
 		
-		// Y axis
+		//Y axis
 		g.setColor(Color.BLACK);
 		g.drawLine(15, 400, 15, 0 ); 
 		g.drawLine(15, 0, 5, 20 );  
@@ -162,13 +162,10 @@ public class magic extends JApplet
 		g.drawLine (width+30, 400, width+15, 400+10); 
 		g.drawLine (width+30, 400, width+15, 400-10);
 		
-		
-		
-		//height+=200; //wysokość od 0(+200) do 400(+200); wykres dla Garganta-del-Cares
-		
+		//drawing
 		double y,y0;
 		index = 0;
-		y0 = height - tab[index][2];
+		y0 = height - tab[index][2]; //tab[x][2] is height
 		g.setColor(Color.RED);
 		for(int i=15;i<(width-(15+1));i++)
 		{
@@ -178,11 +175,10 @@ public class magic extends JApplet
 			index++;
 		}														
 	}
-	
 	public static void main(String[] args) throws FileNotFoundException 
 	{	
 		
-		Locale.setDefault(new Locale("en", "US")); //so u can save double as #.# format
+		Locale.setDefault(new Locale("en", "US")); // for #.# format
 		JFileChooser chooser = new JFileChooser();
 		int returnVal = chooser.showOpenDialog(null);
 		if(returnVal == JFileChooser.APPROVE_OPTION) 
@@ -193,15 +189,15 @@ public class magic extends JApplet
 		int index = 0;
 		String[][] tablica = new String[2300][6]; //[x][0]date, [x][1]time, [x][2]lati, [x][3]longi, [x][4]alti, [x][5]dist;
 		
-		index = magic.load(chooser, index, tablica); // method 'load' must be int so it can return index value
-		magic.save("velocity.csv", index, tablica);
+		index = magic.loadData(chooser, index, tablica); // loadData must be int so it can return index 
+		magic.saveVelocityCsv("velocity.csv", index, tablica);
 		
-		JFrame jp1 = new JFrame();
-		magic a = new magic();
-		jp1.getContentPane().add(a);
-        jp1.setSize(new Dimension(index+50,450));
-        jp1.setVisible(true);
-		}
+		JFrame jp1 = new JFrame("Wykres wysokości od czasu"); //create frame
+		magic a = new magic(); //create object a
+		jp1.getContentPane().add(a); //draw object a on the frame
+        jp1.setSize(new Dimension(index+50,450)); //frame size
+        jp1.setVisible(true); 
+	}
 
 
 }
