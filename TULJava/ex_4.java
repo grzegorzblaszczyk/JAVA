@@ -7,39 +7,23 @@ import java.nio.file.*;
 
 public class ex_4 
 {
-	public static void TEST_IO(String fileName, File file, char[] array) throws Exception
+	public static void TEST(String method, String fileName, File file, char[] array, int IOorNIO) throws Exception
 	{
-		System.out.print("IO Save Time: ");
+		System.out.print(method +" Save Time: ");
 		long Time = System.currentTimeMillis();
 		file.save(array, fileName);
 		long TimeEnd = System.currentTimeMillis() - Time;
 		System.out.println(TimeEnd);
 		
 		
-		System.out.print("IO Read Time: ");
+		System.out.print(method +" Read Time: ");
 		Time = System.currentTimeMillis();
-		file.readIO(fileName);
+		if(IOorNIO == 0)
+			file.readIO(fileName);
+		if(IOorNIO == 1)
+			file.readNIO(fileName);
 		TimeEnd = System.currentTimeMillis() - Time;
-		System.out.println(TimeEnd);
-		
-
-	}
-		
-	public static void TEST_NIO(String fileName, File file, char[] array) throws Exception
-	{
-		System.out.print("NIO Save Time: ");
-		long Time = System.currentTimeMillis();
-		file.save(array, fileName);
-		long TimeEnd = System.currentTimeMillis() - Time;
-		System.out.println(TimeEnd);
-		
-		
-		System.out.print("NIO Read Time: ");
-		Time = System.currentTimeMillis();
-		file.readNIO(fileName);
-		TimeEnd = System.currentTimeMillis() - Time;
-		System.out.println(TimeEnd);
-		
+		System.out.println(TimeEnd);	
 	}
 	
 	public static void fillArray(char[]array)
@@ -62,8 +46,8 @@ public class ex_4
 		testNIO.save(array, "testNIO.txt");
 		testNIO.readAndPrint("testNIO.txt");
 		*/
-		TEST_IO("IOFile.txt", new IOFILE(), array);
-		TEST_NIO("NIOFile.txt",new NIOFILE(), array);
+		TEST("IO","IOFile.txt", new IOFILE(), array, 0);
+		TEST("NIO","NIOFile.txt",new NIOFILE(), array, 1);
 	}
 
 }
