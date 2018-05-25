@@ -1,5 +1,3 @@
-package zadanie6;
-
 import java.util.Scanner;
 import java.util.Locale;
 import java.io.*;
@@ -16,8 +14,9 @@ import java.util.InputMismatchException;
 */
 
 public class VendingMachine {
-	//ściągnięte z neta by zapobiec rozwinięciu dziesiętnemu zmiennej 'kwota' do któregoś miejsca po przecinku
-	public static double round(double value, int places) {
+	
+	public static double round(double value, int places) //for decimal rounding
+	{
 	    if (places < 0) throw new IllegalArgumentException();
 
 	    BigDecimal bd = new BigDecimal(value);
