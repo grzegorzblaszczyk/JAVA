@@ -1,15 +1,16 @@
 package temp;
 
 import java.awt.*;
-
 import javax.swing.*;
 
-/*
+
 import javax.swing.JApplet;
 import javax.swing.JButton;
+
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
- */
-public class DrawMoney extends JPanel
+ 
+public class DrawMoney extends JPanel implements ActionListener
 {
 	private static final long serialVersionUID = 1L;
 	private int [] vmachine = {0,0,0,0,0,0,0,0}; //8
@@ -33,31 +34,75 @@ public class DrawMoney extends JPanel
 		this.y = 10;
 	}
 	
-	void dodajClickMe(String name, int x, int y, int size)
+	void dodajClickMe(String name, int x, int y, int size, ActionListener action) 
 	{
 		JButton clickMe = new JButton(name);
 		setLayout(null);
 		clickMe.setBounds(x,y,size,size);
+		
+		//clickMe.addActionListener(action);
 		add(clickMe);
 	}
 	
 	void dodajKlawe()
 	{
-		dodajClickMe("1",10,100,60);
-		dodajClickMe("1",70,100,60);
-		dodajClickMe("1",130,100,60);
+		TextField tf = new TextField();
+		tf.setBounds(200,280, 150,20); 
+		
+		
+		dodajClickMe("1",10,100,60, new ActionListener(){  
+		    public void actionPerformed(ActionEvent e){  
+	            tf.setText("1");  
+	    } });
+		dodajClickMe("1",70,100,60, new ActionListener(){  
+		    public void actionPerformed(ActionEvent e){  
+	            tf.setText("1");  
+	    } });
+		dodajClickMe("1",130,100,60, new ActionListener(){  
+		    public void actionPerformed(ActionEvent e){  
+	            tf.setText("1");  
+	    } });
 
-		dodajClickMe("1",10,160,60);
-		dodajClickMe("1",70,160,60);
-		dodajClickMe("1",130,160,60);
+		dodajClickMe("1",10,160,60, new ActionListener(){  
+		    public void actionPerformed(ActionEvent e){  
+	            tf.setText("1");  
+	    } });
+		dodajClickMe("1",70,160,60, new ActionListener(){  
+		    public void actionPerformed(ActionEvent e){  
+	            tf.setText("1");  
+	    } });
+		dodajClickMe("1",130,160,60, new ActionListener(){  
+		    public void actionPerformed(ActionEvent e){  
+	            tf.setText("1");  
+	    } });
 
-		dodajClickMe("1",10,220,60);
-		dodajClickMe("1",70,220,60);
-		dodajClickMe("1",130,220,60);
+		dodajClickMe("1",10,220,60, new ActionListener(){  
+		    public void actionPerformed(ActionEvent e){  
+	            tf.setText("1");  
+	    } });
+		dodajClickMe("1",70,220,60, new ActionListener(){  
+		    public void actionPerformed(ActionEvent e){  
+	            tf.setText("1");  
+	    } });
+		dodajClickMe("1",130,220,60, new ActionListener(){  
+		    public void actionPerformed(ActionEvent e){  
+	            tf.setText("1");  
+	    } });
 
-		dodajClickMe("1",10,280,60);
-		dodajClickMe("1",70,280,60);
-		dodajClickMe("1",130,280,60);
+		dodajClickMe("1",10,280,60, new ActionListener(){  
+		    public void actionPerformed(ActionEvent e){  
+	            tf.setText("1");  
+	    } });
+		dodajClickMe("1",70,280,60, new ActionListener(){  
+		    public void actionPerformed(ActionEvent e){  
+	            tf.setText("1");  
+	    } });
+		dodajClickMe("1",130,280,60, new ActionListener(){  
+		    public void actionPerformed(ActionEvent e){  
+	            tf.setText("1");  
+	    } });
+		
+		add(tf);
 	}
 	
 	public void paint/*Component*/(Graphics g)
@@ -85,5 +130,11 @@ public class DrawMoney extends JPanel
 		x = start_x; // u can also use "x-=(60*index) otherwise the program will start drawing dollars from x = 475 
 		
 	
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 }
