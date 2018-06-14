@@ -199,7 +199,7 @@ public class Responser
 		}
 		
 	}
-	public void delete(Table database, String condition, String tableName)
+	public void actionDelete(Table database, String condition, String tableName)
 	{
 		if(!database.getTableName().equals(tableName))
 		{
