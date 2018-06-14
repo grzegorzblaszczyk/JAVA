@@ -199,6 +199,23 @@ public class Responser
 		}
 		
 	}
+	public void delete(Table database, String condition, String tableName)
+	{
+		if(!database.getTableName().equals(tableName))
+		{
+			System.out.println("Nie znaleziono tablicy!");
+			return;
+		}
+		Condition cond = new Condition(condition);
+		for(int i = 0; i<database.getSize();i++)
+		{
+			if(cond.isMatchingCondition(database.getRecord(i)))
+			{
+				database.deleteRecord(i);
+			}
+		}
+		
+	}
 	public void actionShowInterface()
 	{
 		new ProgramInterface().printProgramInterface();
