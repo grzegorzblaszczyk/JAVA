@@ -46,8 +46,8 @@ public class Responser
 			case 3: 
 				actionUpdate(database, extract.get("set"), extract.get("condition"), extract.get("tableName"));
 				break;
-			case 4: //DELETE
-				System.out.println("wybrano DELETE");
+			case 4: 
+				actionDelete(database, extract.get("condition"), extract.get("tableName"));
 				break;
 			case 5:
 				actionShowInterface();
